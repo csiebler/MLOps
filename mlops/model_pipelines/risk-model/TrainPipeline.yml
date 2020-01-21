@@ -1,0 +1,38 @@
+name: Training Pipeline - $(Build.DefinitionName) - $(SourceBranchName)_$(Date:yyyyMMdd)$(Rev:.r)
+
+trigger: none
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  - template: ../../recipes/common/Variables.yml
+
+stages:
+
+  - stage: Training
+    displayName: Train the model
+    jobs:
+      - template: ../../recipes/ci/Train.yml
+        parameters:
+          rm_service_connection: '${{ variables.RM_SERVICE_CONNECTION }}'
+          workspace: '${{ variables.WORKSPACE }}'
+          resource_group: '${{ variables.RESOURCE_GROUP }}'
+          model_name: '${{ variables.RISK_MODEL_NAME }}'
+          aml_compute_cluster: '${{ variables.AML_COMPUTE_CLUSTER }}'
+          dataset_name: '${{ variables.RISK_MODEL_DATASET_NAME }}'
+
+  - stage: RegisterModel
+    displayName: Register the model
+    jobs:
+      # Perform an empty deploy job for approval (This is the way in Azure Devops)
+      - deployment: Approval
+        displayName: Approval for model registration
+        environment: 'Test'
+
+      - template: ../../recipes/ci/RegisterModelFromMetadata.yml
+        parameters:
+          rm_service_connection: '${{ variables.RM_SERVICE_CONNECTION }}'
+          workspace: '${{ variables.WORKSPACE }}'
+          resource_group: '${{ variables.RESOURCE_GROUP }}'
+          model_name: '${{ variables.RISK_MODEL_NAME }}'
