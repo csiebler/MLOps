@@ -10,6 +10,7 @@ parameters:
 
 jobs:
   - job: DeployToACI
+    displayName: Deploy model to ACI
     variables:
       default_inference_config: $(Build.SourcesDirectory)/models/${{ parameters.model_name }}/score/inference_config.yml
       inference_config_var: ${{ coalesce(parameters.inference_config ,  variables.default_inference_config) }}

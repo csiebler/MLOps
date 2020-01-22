@@ -12,7 +12,7 @@ parameters:
 
 jobs:
   - job: TrainJob
-    displayName: Training in Azure ML Compute
+    displayName: Training on AML Compute
     variables:
       # conda dependencies
       default_conda_dependencies_file: models/${{ parameters.model_name }}/train/conda_dependencies.yml

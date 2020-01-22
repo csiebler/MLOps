@@ -38,7 +38,7 @@ stages:
           model_name: '${{ variables.RISK_MODEL_NAME }}'
 
   - stage: DeployToQAAndTest
-    displayName: Deploy model to QA and test (Azure Container Instance)
+    displayName: Deploy model to QA and test
     jobs:
       - template: ../../recipes/cd/DeployToACIFromMetadata.yml
         parameters:
@@ -56,11 +56,11 @@ stages:
           resource_group: '${{ variables.RESOURCE_GROUP }}'
 
   - stage: DeployToProd
-    displayName: Deploy to Prod with approval
+    displayName: Deploy model to Prod
     jobs:
       # Perform an empty deploy job for approval (This is the way in Azure Devops)
       - deployment: Approval
-        displayName: Approval for rolling out to production
+        displayName: Approval for rollout to production
         environment: 'Prod'
 
       - template: ../../recipes/cd/DeployToAKSFromMetadata.yml
