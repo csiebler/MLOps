@@ -47,7 +47,7 @@ stages:
           workspace: '${{ variables.WORKSPACE }}'
           resource_group: '${{ variables.RESOURCE_GROUP }}'
           model_name: '${{ variables.RISK_MODEL_NAME }}'
-      - template: ../../../recipes/ci/RunNewmanFunctionalTests.yml
+      - template: ../../recipes/ci/RunNewmanFunctionalTests.yml
         parameters:
           service_name: 'risk-model-aci'
           postman_collection_file: 'models/risk-model/tests/functional/risk_service_postman_collection.json'
