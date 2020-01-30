@@ -7,7 +7,7 @@ channels:
 
 dependencies:
 - python=3.6.2
-- pip
+- pip=19.3.1
 - pip:
   # Azure ML
   - azureml-sdk[explain,automl,notebooks]==1.0.83
